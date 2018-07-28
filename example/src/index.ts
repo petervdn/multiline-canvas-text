@@ -30,57 +30,26 @@ function update() {
   while (resultContainer.firstChild) {
     resultContainer.removeChild(resultContainer.firstChild);
   }
-  const result = drawText(textInput.value, width, fontSize, selectList.value, spacing);
+  const result = drawText(textInput.value, width, selectList.value, fontSize, spacing);
   resultContainer.appendChild(result.canvas);
 
   resultContainer.style.width = `${result.canvas.width}px`;
   resultContainer.style.height = `${result.canvas.height}px`;
 }
 
-textInput.addEventListener('input', () => {
-  update();
-});
-
-widthInput.addEventListener('input', () => {
-  update();
-});
-
-spacingInput.addEventListener('input', () => {
-  update();
-});
-
-fontSizeInput.addEventListener('input', () => {
-  update();
-});
-
-selectList.addEventListener('input', () => {
-  update();
+[textInput, widthInput, spacingInput, fontSizeInput, selectList].forEach(input => {
+  input.addEventListener('input', update);
 });
 
 textInput.value = 'The quick brown fox jumps over the lazy dog';
 update();
 
-// var WebFontConfig = {
-//   google: {
-//     families: ['Lobster']
-//   },
-//   loading: () => {
-//     console.log('loading');
-//   },
-//   active: () => {
-//     console.log('active');
-//   }
-// };
 
 WebFont.load({
   google: {
     families: fonts,
   },
-  loading: function() {
-    console.log('loading')
-  },
   active: () => {
-    console.log('active');
     update();
   },
 });

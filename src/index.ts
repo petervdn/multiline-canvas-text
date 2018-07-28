@@ -1,3 +1,5 @@
+import { trimCanvas } from './trimCanvas';
+
 interface IFont {
   name: string;
   size: number;
@@ -17,7 +19,7 @@ function splitIntoFittingWords(text: string, availableWidth: number, font: IFont
   const splitResults = [];
 
   text.split(' ').forEach(word => {
-    if (getTextWidth(word, font) < availableWidth) {
+    if (getTextWidth(word, font).width < availableWidth) {
       // word fits
       splitResults.push(word);
     } else {
@@ -37,11 +39,11 @@ function splitIntoFittingWords(text: string, availableWidth: number, font: IFont
  * @param {IFont} font
  * @returns {number}
  */
-function getTextWidth(text: string, font: IFont): number {
+function getTextWidth(text: string, font: IFont): TextMetrics {
   const testContext = document.createElement('canvas').getContext('2d');
   testContext.font = getCanvasFontProperty(font);
 
-  return testContext.measureText(text).width;
+  return testContext.measureText(text);
 }
 
 function groupText(text: string, splitOn: string, availableWidth: number, font: IFont): string[] {
@@ -53,8 +55,7 @@ function groupText(text: string, splitOn: string, availableWidth: number, font: 
 
     // test if the last line with the current word would fit
     const testLine = (lastLine.length > 0 ? lastLine + splitOn : lastLine) + currentItem;
-    // testLine.push(currentWord);
-    const testLineWidth = getTextWidth(testLine, font);
+    const testLineWidth = getTextWidth(testLine, font).width;
     if (
       testLineWidth > availableWidth &&
       !(resultingLines.length === 1 && resultingLines[0].length === 0)
@@ -63,7 +64,6 @@ function groupText(text: string, splitOn: string, availableWidth: number, font: 
       resultingLines.push(currentItem);
     } else {
       // add to current line
-      // lastLine.push(currentWord);
       resultingLines[resultingLines.length - 1] = testLine;
     }
 
@@ -71,53 +71,44 @@ function groupText(text: string, splitOn: string, availableWidth: number, font: 
   }, []);
 }
 
-function fitText(text: string, width: number, font: IFont): any {
-  const fittingWords = splitIntoFittingWords(text, width, font);
-
-  return groupText(fittingWords, ' ', width, font);
-}
-
 export function drawText(
   text: string,
   width: number,
-  fontSize: number,
   fontName: string,
-  lineSpacing: number,
+  fontSize: number,
+  lineSpacing: number = 0,
+  color = 'white',
 ): IDrawTextResult {
+  // for now, just add spacing to fix fonts falling ut of view sometimes (at the bottom specifically)
+  // padding will be removed by trimming canvas at the end
+  const padding = { x: 10, y: 15 };
+
   const font = { size: fontSize, name: fontName };
   const lines = fitText(text, width, font);
 
   // create and init canvas
   const canvas = document.createElement('canvas');
+  canvas.width = width + 2 * padding.x;
+  canvas.height = lines.length * fontSize + (lines.length - 1) * lineSpacing + 2 * padding.y;
+
   const context = canvas.getContext('2d');
-  canvas.width = width;
-  canvas.height = lines.length * fontSize + (lines.length - 1) * lineSpacing;
-
-  // todo find out why bottom margin is a bit too large
-  // this.context.canvas.height -= this.fontSize * 0.2;
-
-  // init properties (get reset after setting the height)
   context.font = getCanvasFontProperty(font);
   context.textAlign = 'center';
-  context.textBaseline = 'hanging';
-
-  // bg
-  context.fillStyle = 'rgba(0,0,0,0.4)';
-  context.fillRect(0, 0, context.canvas.width, context.canvas.height);
+  context.textBaseline = 'top';
 
   // draw lines
   const centerX = canvas.width * 0.5;
-  let yOffset = 1;
+  let yOffset = 0;
   let lastCharacterPosition: IPoint = {
     x: canvas.width * 0.5,
     y: yOffset,
   };
   lines.forEach(line => {
-    context.fillStyle = 'white';
+    context.fillStyle = color;
     context.fillText(line, centerX, yOffset);
 
     lastCharacterPosition = {
-      x: canvas.width * 0.5 + 0.5 * getTextWidth(line, font),
+      x: canvas.width * 0.5 + 0.5 * getTextWidth(line, font).width,
       y: yOffset,
     };
 
@@ -125,9 +116,15 @@ export function drawText(
   });
 
   return {
-    canvas,
     lastCharacterPosition,
+    canvas: trimCanvas(canvas),
   };
+}
+
+function fitText(text: string, width: number, font: IFont): any {
+  const fittingWords = splitIntoFittingWords(text, width, font);
+
+  return groupText(fittingWords, ' ', width, font);
 }
 
 function getCanvasFontProperty(font: IFont): string {
