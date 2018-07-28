@@ -1,11 +1,11 @@
 import { trimCanvas } from './trimCanvas';
 
-interface IFont {
+export interface IFont {
   name: string;
   size: number;
 }
 
-interface IPoint {
+export interface IPoint {
   x: number;
   y: number;
 }
