@@ -13,6 +13,7 @@ interface IPoint {
 export interface IDrawTextResult {
   canvas: HTMLCanvasElement;
   lastCharacterPosition: IPoint;
+  lines: string[];
 }
 
 function splitIntoFittingWords(text: string, availableWidth: number, font: IFont): string {
@@ -117,6 +118,7 @@ export function drawText(
 
   return {
     lastCharacterPosition,
+    lines: [],
     canvas: trimCanvas(canvas),
   };
 }

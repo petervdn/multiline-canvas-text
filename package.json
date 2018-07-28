@@ -1,7 +1,7 @@
 {
   "name": "multiline-canvas-text",
   "version": "1.0.0",
-  "description": "Render multiline text to a canvas.",
+  "description": "Render multiline text to canvas",
   "main": "./index.js",
   "types": "./index.d.ts",
   "scripts": {
