@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>example</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+  </head>
+  <style>
+    #result {
+      margin-top: 20px;
+      background-color: #ff0000;
+    }
+    input[type=text] {
+      padding: 5px;
+      width: 100%;
+      font-size: 20px;
+    }
+    select {
+      display: block;
+      margin: 10px 0;
+    }
+  </style>
+  <body style="padding: 20px">
+  <input type="text">
+  <select></select>
+  <input type="range" id="width" min="20" max="600">
+  <input type="range" id="fontsize" min="12" max="80">
+  <input type="range" id="spacing" min="0" max="30">
+  <div id="result"></div>
+  </body>
+  <script src="./main.js"></script>
+</html>
+

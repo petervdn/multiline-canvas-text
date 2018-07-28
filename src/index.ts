@@ -80,20 +80,18 @@ function fitText(text: string, width: number, font: IFont): any {
 export function drawText(
   text: string,
   width: number,
-  padding: { x: number; y: number },
   fontSize: number,
   fontName: string,
-  lineSpacing = 5,
+  lineSpacing: number,
 ): IDrawTextResult {
   const font = { size: fontSize, name: fontName };
-  const availableWidth = width - 2 * padding.x;
-  const lines = fitText(text, availableWidth, font);
+  const lines = fitText(text, width, font);
 
   // create and init canvas
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d');
   canvas.width = width;
-  canvas.height = 2 * padding.y + lines.length * fontSize + (lines.length - 1) * lineSpacing;
+  canvas.height = lines.length * fontSize + (lines.length - 1) * lineSpacing;
 
   // todo find out why bottom margin is a bit too large
   // this.context.canvas.height -= this.fontSize * 0.2;
@@ -109,7 +107,7 @@ export function drawText(
 
   // draw lines
   const centerX = canvas.width * 0.5;
-  let yOffset = padding.y;
+  let yOffset = 1;
   let lastCharacterPosition: IPoint = {
     x: canvas.width * 0.5,
     y: yOffset,
