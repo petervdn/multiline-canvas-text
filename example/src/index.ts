@@ -22,6 +22,9 @@ const widthInput = <HTMLInputElement>document.querySelector('#width');
 const spacingInput = <HTMLInputElement>document.querySelector('#spacing');
 const fontSizeInput = <HTMLInputElement>document.querySelector('#fontsize');
 const resultContainer = <HTMLElement>document.querySelector('#result');
+const widthValue = <HTMLInputElement>document.querySelector('#widthValue');
+const fontSizeValue = <HTMLInputElement>document.querySelector('#fontSizeValue');
+const lineSpacingValue = <HTMLInputElement>document.querySelector('#lineSpacingValue');
 
 function update() {
   const width = parseInt(widthInput.value, 10);
@@ -35,6 +38,10 @@ function update() {
 
   resultContainer.style.width = `${result.canvas.width}px`;
   resultContainer.style.height = `${result.canvas.height}px`;
+
+  widthValue.innerText = width.toString();
+  fontSizeValue.innerText = fontSize.toString();
+  lineSpacingValue.innerText = spacing.toString();
 }
 
 [textInput, widthInput, spacingInput, fontSizeInput, selectList].forEach(input => {

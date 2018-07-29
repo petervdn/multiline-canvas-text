@@ -1,7 +1,7 @@
 {
   "name": "multiline-canvas-text",
   "version": "1.0.3",
-  "description": "Render a string to canvas, breaking it up into multiple lines to fit within a certain width.",
+  "description": "Render a string to canvas, breaking it up into multiple lines to fit the given width.",
   "main": "./index.js",
   "types": "./index.d.ts",
   "scripts": {

@@ -14,6 +14,20 @@
       margin-top: 20px;
       background-color: royalblue;
     }
+    #sliders {
+      display: flex;
+    }
+    #sliders > div {
+      flex-grow: 1;
+      margin: 0 10px;
+    }
+    #sliders > div label {
+      font-weight: bold;
+      margin: 0;
+    }
+    input[type=range] {
+      width: 100%;
+    }
     input[type=text] {
       padding: 5px;
       width: 100%;
@@ -26,12 +40,23 @@
   </style>
   <body style="padding: 20px">
   <h1>multiline-canvas-text</h1>
-  <p>Render a string to canvas and fit within a given width.</p>
+  <p>Render a string to canvas, breaking it up into multiple lines to fit the given width.</p>
   <input type="text">
   <select></select>
-  <input type="range" id="width" min="20" max="600">
-  <input type="range" id="fontsize" min="12" max="80">
-  <input type="range" id="spacing" min="0" max="30" value="0">
+  <div id="sliders">
+    <div>
+      <label>width: <span id="widthValue"></span></label>
+      <input type="range" id="width" min="20" max="600">
+    </div>
+    <div>
+      <label>font size: <span id="fontSizeValue"></span></label>
+      <input type="range" id="fontsize" min="12" max="80">
+    </div>
+    <div>
+      <label>line spacing: <span id="lineSpacingValue"></span></label>
+      <input type="range" id="spacing" min="-30" max="30" value="0">
+    </div>
+  </div>
   <div id="result"></div>
   </body>
   <script src="./main.js"></script>
