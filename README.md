@@ -18,7 +18,7 @@ const width = 40;         // width in pixels to fit the text
 const font = 'Arial';     // font should be available in the page
 const fontSize = 20;      // in pixels
 const lineSpacing = 1;    // vertical spacing between the lines
-const color = 'white';    // can be any valid css color string: '#FFF' or 'rgba(0,0,0,0.5)'
+const color = 'white';    // can be any valid css color string: 'black', #FFF', 'rgba(0,0,0,0.5)', etc
 const strokeText = false; // true results in calling strokeText instead of fillText
 
 const result = drawText(text, width, font, fontSize, lineSpacing, color, strokeText);
