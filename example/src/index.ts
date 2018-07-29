@@ -2,7 +2,7 @@ import { drawText } from "../../src";
 const WebFont = require('webfontloader');
 
 const fonts = ['Arial', 'Varela Round', 'Lobster', 'Roboto', 'Acme', 'Gloria Hallelujah'  ];
-const selectList = document.querySelector("select");
+const selectList = <HTMLInputElement>document.querySelector("#fontSelect");
 
 
 function createFontSelect() {
@@ -25,6 +25,7 @@ const resultContainer = <HTMLElement>document.querySelector('#result');
 const widthValue = <HTMLInputElement>document.querySelector('#widthValue');
 const fontSizeValue = <HTMLInputElement>document.querySelector('#fontSizeValue');
 const lineSpacingValue = <HTMLInputElement>document.querySelector('#lineSpacingValue');
+const renderSelect = <HTMLInputElement>document.querySelector('#renderSelect');
 
 function update() {
   const width = parseInt(widthInput.value, 10);
@@ -33,7 +34,15 @@ function update() {
   while (resultContainer.firstChild) {
     resultContainer.removeChild(resultContainer.firstChild);
   }
-  const result = drawText(textInput.value, width, selectList.value, fontSize, spacing);
+  const result = drawText(
+    textInput.value,
+    width,
+    selectList.value,
+    fontSize,
+    spacing,
+    'white',
+    renderSelect.value === 'strokeText'
+  );
   resultContainer.appendChild(result.canvas);
 
   resultContainer.style.width = `${result.canvas.width}px`;
@@ -44,7 +53,7 @@ function update() {
   lineSpacingValue.innerText = spacing.toString();
 }
 
-[textInput, widthInput, spacingInput, fontSizeInput, selectList].forEach(input => {
+[renderSelect, textInput, widthInput, spacingInput, fontSizeInput, selectList].forEach(input => {
   input.addEventListener('input', update);
 });
 

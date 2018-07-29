@@ -42,7 +42,11 @@
   <h1>multiline-canvas-text</h1>
   <p>Render a string to canvas, breaking it up into multiple lines to fit the given width.</p>
   <input type="text">
-  <select></select>
+  <select id="fontSelect"></select>
+  <select id="renderSelect">
+    <option>fillText</option>
+    <option>strokeText</option>
+  </select>
   <div id="sliders">
     <div>
       <label>width: <span id="widthValue"></span></label>

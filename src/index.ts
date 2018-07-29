@@ -109,7 +109,7 @@ export function drawText(
 ): IDrawTextResult {
   // for now, just add spacing to fix fonts falling ut of view sometimes (at the bottom specifically)
   // padding will be removed by trimming canvas at the end
-  const padding = { x: 10, y: fontSize * 2 };
+  const padding = { x: 10, y: fontSize * 2 }; // todo this needs a better fix
 
   const font = createFont(fontName, fontSize);
   const lines = fitText(text, width, fontName, fontSize);
@@ -135,9 +135,9 @@ export function drawText(
   };
   lines.forEach(line => {
     if (strokeText) {
-      context.fillText(line, centerX, yOffset);
-    } else {
       context.strokeText(line, centerX, yOffset);
+    } else {
+      context.fillText(line, centerX, yOffset);
     }
 
     cursor = {
