@@ -1,7 +1,7 @@
 import { drawText } from "../../src";
 const WebFont = require('webfontloader');
 
-const fonts = ['Arial', 'Varela Round', 'Lobster'];
+const fonts = ['Arial', 'Varela Round', 'Lobster', 'Roboto', 'Acme', 'Gloria Hallelujah'  ];
 const selectList = document.querySelector("select");
 
 
