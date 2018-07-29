@@ -12,10 +12,17 @@ export interface IPoint {
 
 export interface IDrawTextResult {
   canvas: HTMLCanvasElement;
-  lastCharacterPosition: IPoint;
+  cursor: IPoint;
   lines: string[];
 }
 
+/**
+ *
+ * @param {string} text
+ * @param {number} availableWidth
+ * @param {IFont} font
+ * @returns {string}
+ */
 function splitIntoFittingWords(text: string, availableWidth: number, font: IFont): string {
   const splitResults = [];
 
@@ -100,7 +107,7 @@ export function drawText(
   // draw lines
   const centerX = canvas.width * 0.5;
   let yOffset = 0;
-  let lastCharacterPosition: IPoint = {
+  let cursor: IPoint = {
     x: canvas.width * 0.5,
     y: yOffset,
   };
@@ -108,7 +115,7 @@ export function drawText(
     context.fillStyle = color;
     context.fillText(line, centerX, yOffset);
 
-    lastCharacterPosition = {
+    cursor = {
       x: canvas.width * 0.5 + 0.5 * getTextWidth(line, font).width,
       y: yOffset,
     };
@@ -117,8 +124,8 @@ export function drawText(
   });
 
   return {
-    lastCharacterPosition,
-    lines: [],
+    lines,
+    cursor,
     canvas: trimCanvas(canvas),
   };
 }
