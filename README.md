@@ -24,5 +24,5 @@ element.appendChild(result.canvas);
 
 The result object contains 3 properties:
 * `canvas`: The generated canvas element with the rendered text. This canvas has the width that was given to the `drawText` method, but can obviously vary in height.
-* `lines`: An array that shows how the string was broken up into multiple lines, for example: `["The quick brown", "fox jumps over", "the lazy dog"`
-* `cursor`: if you are replicating an interactive textfield in canvas, you may want to add a blinking cursor to increase the user experience. The `cursor` property holds `x` and `y` values for where to draw the it.
+* `lines`: An array that shows how the string was broken up into multiple lines, for example: `["The quick brown", "fox jumps over", "the lazy dog"]`
+* `cursor`: if you are replicating an interactive textfield in canvas, you may want to add a blinking cursor to increase the user experience. The `cursor` property holds `x` and `y` values for where to draw it.
