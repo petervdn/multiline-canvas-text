@@ -14,13 +14,14 @@ Check out the [interactive example](https://petervdn.github.io/multiline-canvas-
 import { drawText } from "multiline-canvas-text";
 
 const text = 'The quick brown fox jumps over the lazy dog';
-const width = 40;
-const font = 'Arial';
-const fontSize = 20;
-const lineSpacing = 1;
-const color = 'white';
+const width = 40;         // width in pixels to fit the text
+const font = 'Arial';     // font should be available in the page
+const fontSize = 20;      // in pixels
+const lineSpacing = 1;    // vertical spacing between the lines
+const color = 'white';    // can be any valid css color string: '#FFF' or 'rgba(0,0,0,0.5)'
+const strokeText = false; // true results in calling strokeText instead of fillText
 
-const result = drawText(text, width, font, fontSize, lineSpacing, color);
+const result = drawText(text, width, font, fontSize, lineSpacing, color, strokeText);
 
 element.appendChild(result.canvas);
 ```

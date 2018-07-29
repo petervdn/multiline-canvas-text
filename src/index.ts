@@ -95,6 +95,7 @@ function groupText(text: string, splitOn: string, availableWidth: number, font: 
  * @param {number} fontSize
  * @param {number} lineSpacing
  * @param {string} color
+ * @param {boolean} strokeText
  * @returns {IDrawTextResult}
  */
 export function drawText(
@@ -104,6 +105,7 @@ export function drawText(
   fontSize: number,
   lineSpacing: number = 0,
   color = 'white',
+  strokeText = false,
 ): IDrawTextResult {
   // for now, just add spacing to fix fonts falling ut of view sometimes (at the bottom specifically)
   // padding will be removed by trimming canvas at the end
@@ -121,6 +123,8 @@ export function drawText(
   context.font = getCanvasFontProperty(font);
   context.textAlign = 'center';
   context.textBaseline = 'top';
+  context.fillStyle = color;
+  context.strokeStyle = color;
 
   // draw lines
   const centerX = canvas.width * 0.5;
@@ -130,8 +134,11 @@ export function drawText(
     y: yOffset,
   };
   lines.forEach(line => {
-    context.fillStyle = color;
-    context.fillText(line, centerX, yOffset);
+    if (strokeText) {
+      context.fillText(line, centerX, yOffset);
+    } else {
+      context.strokeText(line, centerX, yOffset);
+    }
 
     cursor = {
       x: canvas.width * 0.5 + 0.5 * getTextWidth(line, font).width,
@@ -152,7 +159,8 @@ export function drawText(
  * Breaks up a string into lines that fit within the supplied width.
  * @param {string} text
  * @param {number} width
- * @param {IFont} font
+ * @param {string} fontName
+ * @param {number} fontSize
  * @returns {string[]}
  */
 export function fitText(text: string, width: number, fontName: string, fontSize: number): string[] {
