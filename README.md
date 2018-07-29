@@ -6,6 +6,8 @@ Render a string to a canvas and make it fit within a given width.
 npm install multiline-canvas-text
 ```
 
+## demo
+Check out the [interactive example](https://petervdn.github.io/multiline-canvas-text/example/).
 
 ## usage
 ```javascript
