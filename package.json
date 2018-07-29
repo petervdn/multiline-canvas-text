@@ -1,6 +1,6 @@
 {
   "name": "multiline-canvas-text",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Render a string to canvas, breaking it up into multiple lines to fit the given width.",
   "main": "./index.js",
   "types": "./index.d.ts",
