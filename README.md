@@ -1,5 +1,5 @@
 # multiline-canvas-text
-Render a string to canvas, breaking it up into multiple lines to fit within a certain width.
+Render a string to canvas, breaking it up into multiple lines to fit the given width.
 
 ## install
 ```sh
