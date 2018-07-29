@@ -17,7 +17,7 @@ export interface IDrawTextResult {
 }
 
 /**
- *
+ * For a given string, returns a new string in which all the separate words (characters divided by a space) fit in the given width. Can add spaces into original words if they are too long.
  * @param {string} text
  * @param {number} availableWidth
  * @param {IFont} font
@@ -54,6 +54,14 @@ function getTextWidth(text: string, font: IFont): TextMetrics {
   return testContext.measureText(text);
 }
 
+/**
+ * Groups a given string into fitting parts. What a part is is defined by the character to split the original string on.
+ * @param {string} text
+ * @param {string} splitOn
+ * @param {number} availableWidth
+ * @param {IFont} font
+ * @returns {string[]}
+ */
 function groupText(text: string, splitOn: string, availableWidth: number, font: IFont): string[] {
   return text.split(splitOn).reduce((resultingLines, currentItem) => {
     if (resultingLines.length === 0) {
@@ -79,6 +87,16 @@ function groupText(text: string, splitOn: string, availableWidth: number, font: 
   }, []);
 }
 
+/**
+ * Creates a canvas of the given width and renders the string into it
+ * @param {string} text
+ * @param {number} width
+ * @param {string} fontName
+ * @param {number} fontSize
+ * @param {number} lineSpacing
+ * @param {string} color
+ * @returns {IDrawTextResult}
+ */
 export function drawText(
   text: string,
   width: number,
@@ -91,8 +109,8 @@ export function drawText(
   // padding will be removed by trimming canvas at the end
   const padding = { x: 10, y: 15 };
 
-  const font = { size: fontSize, name: fontName };
-  const lines = fitText(text, width, font);
+  const font = createFont(fontName, fontSize);
+  const lines = fitText(text, width, fontName, fontSize);
 
   // create and init canvas
   const canvas = document.createElement('canvas');
@@ -130,12 +148,33 @@ export function drawText(
   };
 }
 
-function fitText(text: string, width: number, font: IFont): any {
+/**
+ * Breaks up a string into lines that fit within the supplied width.
+ * @param {string} text
+ * @param {number} width
+ * @param {IFont} font
+ * @returns {string[]}
+ */
+export function fitText(text: string, width: number, fontName: string, fontSize: number): string[] {
+  const font = createFont(fontName, fontSize);
   const fittingWords = splitIntoFittingWords(text, width, font);
 
   return groupText(fittingWords, ' ', width, font);
 }
 
+/**
+ * Formats fontName and fontSize into a css string for canvas.
+ * @param {IFont} font
+ * @returns {string}
+ */
 function getCanvasFontProperty(font: IFont): string {
   return `${font.size}px ${font.name}`;
 }
+
+/**
+ * Create IFont object
+ * @param {string} name
+ * @param {number} size
+ * @returns {IFont}
+ */
+const createFont = (name: string, size: number) => ({ size, name });
