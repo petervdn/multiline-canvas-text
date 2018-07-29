@@ -26,6 +26,7 @@ const widthValue = <HTMLInputElement>document.querySelector('#widthValue');
 const fontSizeValue = <HTMLInputElement>document.querySelector('#fontSizeValue');
 const lineSpacingValue = <HTMLInputElement>document.querySelector('#lineSpacingValue');
 const renderSelect = <HTMLInputElement>document.querySelector('#renderSelect');
+const alignSelect = <HTMLInputElement>document.querySelector('#alignSelect');
 
 function update() {
   const width = parseInt(widthInput.value, 10);
@@ -41,7 +42,8 @@ function update() {
     fontSize,
     spacing,
     'white',
-    renderSelect.value === 'strokeText'
+    renderSelect.value === 'strokeText',
+    alignSelect.value,
   );
   resultContainer.appendChild(result.canvas);
 
@@ -53,7 +55,7 @@ function update() {
   lineSpacingValue.innerText = spacing.toString();
 }
 
-[renderSelect, textInput, widthInput, spacingInput, fontSizeInput, selectList].forEach(input => {
+[alignSelect, renderSelect, textInput, widthInput, spacingInput, fontSizeInput, selectList].forEach(input => {
   input.addEventListener('input', update);
 });
 

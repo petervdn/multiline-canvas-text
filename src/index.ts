@@ -16,6 +16,12 @@ export interface IDrawTextResult {
   lines: string[];
 }
 
+export const TextAlign = {
+  CENTER: 'center',
+  LEFT: 'left',
+  RIGHT: 'right',
+};
+
 /**
  * For a given string, returns a new string in which all the separate words (characters divided by a space) fit in the given width. Can add spaces into original words if they are too long.
  * @param {string} text
@@ -96,6 +102,7 @@ function groupText(text: string, splitOn: string, availableWidth: number, font: 
  * @param {number} lineSpacing
  * @param {string} color
  * @param {boolean} strokeText
+ * @param {string} align
  * @returns {IDrawTextResult}
  */
 export function drawText(
@@ -106,28 +113,48 @@ export function drawText(
   lineSpacing: number = 0,
   color = 'white',
   strokeText = false,
+  align = 'center',
 ): IDrawTextResult {
+  const alignModes = [TextAlign.LEFT, TextAlign.CENTER, TextAlign.RIGHT];
+  if (alignModes.indexOf(align) === -1) {
+    throw new Error(`Invalid alignMode (possible options: ${alignModes.join(',')})`);
+  }
+
   // for now, just add spacing to fix fonts falling ut of view sometimes (at the bottom specifically)
   // padding will be removed by trimming canvas at the end
-  const padding = { x: 10, y: fontSize * 2 }; // todo this needs a better fix
+  const padding = { x: 20, y: fontSize * 2 }; // todo this needs a better fix
 
   const font = createFont(fontName, fontSize);
-  const lines = fitText(text, width, fontName, fontSize);
+  const lines = fitText(text, width - 2 * padding.x, fontName, fontSize);
 
   // create and init canvas
   const canvas = document.createElement('canvas');
-  canvas.width = width + 2 * padding.x;
+  canvas.width = width; // + 2 * padding.x;
   canvas.height = lines.length * fontSize + (lines.length - 1) * lineSpacing + 2 * padding.y;
 
   const context = canvas.getContext('2d');
   context.font = getCanvasFontProperty(font);
-  context.textAlign = 'center';
+  context.textAlign = align;
   context.textBaseline = 'top';
   context.fillStyle = color;
   context.strokeStyle = color;
 
   // draw lines
-  const centerX = canvas.width * 0.5;
+  let baseX;
+  switch (align) {
+    case TextAlign.RIGHT: {
+      baseX = canvas.width - padding.x;
+      break;
+    }
+    case TextAlign.LEFT: {
+      baseX = padding.x;
+      break;
+    }
+    case TextAlign.CENTER: {
+      baseX = canvas.width * 0.5;
+      break;
+    }
+  }
   let yOffset = 0;
   let cursor: IPoint = {
     x: canvas.width * 0.5,
@@ -135,9 +162,9 @@ export function drawText(
   };
   lines.forEach(line => {
     if (strokeText) {
-      context.strokeText(line, centerX, yOffset);
+      context.strokeText(line, baseX, yOffset);
     } else {
-      context.fillText(line, centerX, yOffset);
+      context.fillText(line, baseX, yOffset);
     }
 
     cursor = {
